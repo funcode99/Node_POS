@@ -1,0 +1,42 @@
+def branch
+
+pipeline {
+
+    agent any
+
+    parameters {
+        booleanParam(name: 'runTest', defaultValue: true, description: 'Toggle this value for testing')
+        choice(name: 'CICD', choices:['CI', 'CICD'], description: 'Pick one')
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+            } 
+        }
+
+        stage('Run Testing') {
+            branch = BRANCH_NAME
+            when {
+                    expression {
+                        // BRANCH_NAME == 'master' || BRANCH_NAME == 'staging'
+                        params.RUNTEST
+                    }
+            }
+            steps {
+                echo 'Testing...'
+            }
+        }
+
+        stage('Deploy')
+            when {
+                expression {
+                    params.CICD == 'CICD'
+                }
+            }
+            steps {
+                echo 'Deploying' 
+            }
+    }
+}
