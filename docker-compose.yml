@@ -1,0 +1,63 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:latest
+    networks:
+      - simplenet
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+      - ./data:/data
+    environment:
+      - POSTGRES_PASSWORD=sawa11
+      - POSTGRES_USER=coba1
+      - POSTGRES_DB=DbStore
+
+  redis:
+    image: redis:latest
+    command: redis-server --requirepass ' passwordnyaapa'
+    networks:
+      - simplenet
+    volumes:
+      - ./redis:/data
+
+  nodejs:
+    image: silverstack/newnode:latest
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./logs:/backend/logs
+    deploy:
+      mode: replicated
+      replicas: 3
+      resources:
+        limits:
+          cpus: '1'
+          memory: 50M
+    networks:
+      - simplenet
+    environment:
+      - DB_USER=coba1
+      - DB_HOST=postgres
+      - DB_DATABASE=DbStore
+      - DB_PASS=sawa11
+      - SERVICEPORT= 1999
+      - JWT_KEYS= mantap
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD= passwordnyaapa
+      - REDIS_PORT= 6379
+
+  vue:
+    image: silverstack/vuetest:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - nodejs
+    environment:
+      - VUE_APP_MAIN_URL= 'http://18.234.192.143/product/'
+    networks:
+      - simplenet
+
+networks:
+  simplenet:
