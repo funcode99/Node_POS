@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     CommitHash = sh (script : "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-                    builderDocker = docker.build("silverstack19/backend:${CommitHash}")
+                    builderDocker = docker.build("silverstack19/backend:latest")
                 }
             }
         }
@@ -71,7 +71,7 @@ pipeline {
                                  verbose: false,
                                  transfers: [
                                         sshTransfer(
-                                          execCommand: 'docker pull silverstack19/backend:c6368749f5e7893a0335a296c09bd0ff5ec53cb3; docker kill backend; docker run -d --rm --name backend -p 1999:80 silverstack19/backend:c6368749f5e7893a0335a296c09bd0ff5ec53cb3; docker-compose up -d',
+                                          execCommand: 'docker pull silverstack19/backend:latest; docker kill backend; docker run -d --rm --name backend -p 1999:80 silverstack19/backend:latest;',
                                           execTimeout: 120000,
                                     )
                                 ]
