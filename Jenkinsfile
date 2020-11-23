@@ -71,7 +71,7 @@ pipeline {
                                  verbose: false,
                                  transfers: [
                                         sshTransfer(
-                                          execCommand: 'docker pull silverstack19/backend:c6368749f5e7893a0335a296c09bd0ff5ec53cb3; docker kill frontend; docker run -d --rm --name frontend -p 1999:80 silverstack19/backend:c6368749f5e7893a0335a296c09bd0ff5ec53cb3',
+                                          execCommand: 'docker pull silverstack19/backend:c6368749f5e7893a0335a296c09bd0ff5ec53cb3; docker kill backend; docker run -d --rm --name backend -p 1999:80 silverstack19/backend:c6368749f5e7893a0335a296c09bd0ff5ec53cb3',
                                           execTimeout: 120000,
                                     )
                                 ]
