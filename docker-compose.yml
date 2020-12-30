@@ -9,7 +9,7 @@ services:
       - ./postgresql/data:/var/lib/postgresql/data
       - ./data:/data
     ports :
-      - 6432:6432
+      - 5432:5432
     environment:
       - POSTGRES_PASSWORD=sawa11
       - POSTGRES_USER=coba1
