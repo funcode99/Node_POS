@@ -67,11 +67,13 @@ pipeline {
                         sshPublisher(
                             publishers: [
                                 sshPublisherDesc(
-                                 configName: 'Development',
-                                 verbose: false,
+                                 configName: 'Development-Idris',
+                                 verbose: true,
                                  transfers: [
                                         sshTransfer(
-                                          execCommand: 'docker pull silverstack19/backend:latest; docker kill backend; docker run -d --rm --name backend -p 1999:80 silverstack19/backend:latest;',
+                                          sourceFiles: 'docker-compose.yml',
+                                          remoteDirectory: 'backend',  
+                                          execCommand: 'cd backend && docker-compose build --pull && docker-compose up -d',
                                           execTimeout: 120000,
                                     )
                                 ]
