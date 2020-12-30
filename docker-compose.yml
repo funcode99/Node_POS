@@ -28,13 +28,8 @@ services:
       - redis
     volumes:
       - ./logs:/backend/logs
-    deploy:
-      mode: replicated
-      replicas: 3
-      resources:
-        limits:
-          cpus: '1'
-          memory: 50M
+    ports:
+      - 1999:1999
     networks:
       - simplenet
     environment:
