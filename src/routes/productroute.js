@@ -5,7 +5,7 @@ const validate = require('../middleware/validate')
 const upload = require('../middleware/upload')
 const cache = require ('../middleware/cache')
 
-routes.get("/",  validate.Admin, cache.product, controller.all) //product/nama
+routes.get("/", cache.product, controller.all)
 routes.get('/search',  controller.search)
 routes.post('/',  upload.single('image'), controller.add)
 routes.put('/',  upload.single('image'), controller.edit)
