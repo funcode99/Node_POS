@@ -1,0 +1,16 @@
+[localhost]
+remote ansible_host=localhost ansible_connection=local
+
+[deployment]
+deployment ansible_host=35.170.187.234 ansible_connection=ssh ansible_user=ansman ansible_ssh_pass=mimin321
+
+[production]
+production ansible_host=52.207.249.86 ansible_connection=ssh ansible_user=ansman ansible_ssh_pass=mimin321
+
+[fullstack:children]
+deployment
+production
+
+[all:children]
+deployment
+production
