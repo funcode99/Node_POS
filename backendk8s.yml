@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: example
+---
+apiVersion: v1
+data:
+  DB_USER: 'coba1'
+  DB_HOST: '18.205.116.201'
+  DB_DATABASE: 'DbStore'
+  DB_PASS: 'sawa11'
+  SERVICEPORT: '1999'
+  JWT_KEYS: 'mantap'
+  REDIS_HOST: '18.205.116.201'
+  REDIS_PASSWORD: ' passwordnyaapa'
+  REDIS_PORT: '6379'
+kind: ConfigMap
+metadata:
+  name: test-service
+  namespace: example
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-service
+  namespace: example
+spec:
+  selector:
+    matchLabels:
+      app: user-services
+  replicas: 2
+  template:
+      metadata:
+        labels:
+          app: user-services
+      spec:
+        containers:
+          - name: user-services
+            image: silverstack19/backend:latest
+            ports:
+              - containerPort: 1999
+            envFrom:
+              - configMapRef:
+                  name: test-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-service
+  namespace: example
+  labels:
+    app: user-services
+spec:
+  selector:
+    app: user-services
+  type: NodePort
+  ports:
+    - port: 8081
+      targetPort: 1999
+      protocol: TCP
+      name: serviceport
